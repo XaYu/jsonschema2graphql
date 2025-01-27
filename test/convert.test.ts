@@ -43,14 +43,14 @@ it('correctly converts basic attribute types', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     type Person {
       name: String
       age: Int
       score: Float 
       isMyFriend: Boolean
-    }
-    type Query {
-      people: [Person]
     }
   `
   testConversion(jsonSchema, expectedSchemaText)
@@ -71,13 +71,14 @@ it('converts a literal object', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     type Person {
       name: String
       age: Int
     }
-    type Query {
-      people: [Person]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -95,14 +96,16 @@ it('converts a text schema', () => {
       }
     }
   }`
+
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     type Person {
       name: String
       age: Int
     }
-    type Query {
-      people: [Person]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -139,6 +142,9 @@ it('converts descriptions', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     """
     An individual human being.
     """
@@ -152,9 +158,7 @@ it('converts descriptions', () => {
       """
       age: Int
     }
-    type Query {
-      people: [Person]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -182,14 +186,15 @@ it('converts array type properties', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     type Person {
       name: String
       luckyNumbers: [Int!]
       favoriteColors: [String!]
     }
-    type Query {
-      people: [Person]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -204,6 +209,7 @@ test('enforces required attributes', () => {
     },
     required: ['somethingRequired', 'somethingElseRequired'],
   }
+
   const expectedSchemaText = `
     type Query {
       widgets: [Widget]
@@ -212,7 +218,8 @@ test('enforces required attributes', () => {
       somethingRequired: Int!
       somethingOptional: Int
       somethingElseRequired: Int!
-    }`
+    }
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -223,12 +230,13 @@ test('handles an object with no properties', () => {
     type: 'object',
   }
   const expectedSchemaText = `
+    type Query {
+      emptyVoids: [EmptyVoid]
+    }
     type EmptyVoid {
       _empty: String
     }
-    type Query {
-      emptyVoids: [EmptyVoid]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -253,18 +261,18 @@ test('handles a reference (using $ref)', () => {
     },
   }
   const expectedSchemaText = `
-    type Apple {
-      color: String
-      bestFriend: Orange
+    type Query {
+      oranges: [Orange]
+      apples: [Apple]
     }
     type Orange {
       color: String
     }
-    type Query {
-      oranges: [Orange]
-      apples: [Apple]
-    }`
-
+    type Apple {
+      color: String
+      bestFriend: Orange
+    }
+  `
   testConversion([orange, apple], expectedSchemaText)
 })
 
@@ -292,18 +300,18 @@ test('handles a reference in an array property', () => {
     },
   }
   const expectedSchemaText = `
-    type Apple {
-      color: String
-      bestFriends: [Orange!]
+    type Query {
+      oranges: [Orange]
+      apples: [Apple]
     }
     type Orange {
       color: String
     }
-    type Query {
-      oranges: [Orange]
-      apples: [Apple]
-    }`
-
+    type Apple {
+      color: String
+      bestFriends: [Orange!]
+    }
+  `
   testConversion([orange, apple], expectedSchemaText)
 })
 
@@ -332,13 +340,14 @@ test('handles self-reference', () => {
   }
 
   const expectedSchemaText = `
+    type Query {
+      employees: [Employee]
+    }
     type Employee {
       name: String
       manager: Employee
     }
-    type Query {
-      employees: [Employee]
-    }`
+  `
   testConversion(employee, expectedSchemaText)
 })
 
@@ -364,16 +373,17 @@ test('handles a circular reference', () => {
   }
 
   const expectedSchemaText = `
-    type Apple {
-      bestFriend: Orange
+    type Query {
+      oranges: [Orange]
+      apples: [Apple]
     }
     type Orange {
       bestFriend: Apple
     }
-    type Query {
-      oranges: [Orange]
-      apples: [Apple]
-    }`
+    type Apple {
+      bestFriend: Orange
+    }
+  `
   testConversion([orange, apple], expectedSchemaText)
 })
 
@@ -398,6 +408,10 @@ test('handles references to local $defs', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      addresses: [Address]
+      contacts: [Contact]
+    }
     type Address {
       street_address: String
       city: String
@@ -408,10 +422,7 @@ test('handles references to local $defs', () => {
       billing_address: Address
       shipping_address: Address
     }
-    type Query {
-      addresses: [Address]
-      contacts: [Contact]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -428,6 +439,9 @@ test('handles enum types', () => {
   }
 
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     type Person {
       height: PersonHeight
     }
@@ -436,10 +450,7 @@ test('handles enum types', () => {
       average
       short
     }
-    type Query {
-      people: [Person]
-    }`
-
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -456,6 +467,9 @@ test('handles enum types with invalid characters', () => {
   }
 
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     type Person {
       height: PersonHeight
     }
@@ -464,9 +478,7 @@ test('handles enum types with invalid characters', () => {
       average
       really_really_short
     }
-    type Query {
-      people: [Person]
-    }`
+  `
 
   testConversion(jsonSchema, expectedSchemaText)
 })
@@ -483,6 +495,9 @@ test('handles enum with comparison symbols', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      comparators: [Comparator]
+    }
     type Comparator {
       operator: ComparatorOperator
     }
@@ -492,9 +507,7 @@ test('handles enum with comparison symbols', () => {
       GTE
       GT
     }
-    type Query {
-      comparators: [Comparator]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -510,6 +523,9 @@ test('handles enum with numeric keys', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      people: [Person]
+    }
     type Person {
       age: PersonAge
     }
@@ -518,9 +534,7 @@ test('handles enum with numeric keys', () => {
       VALUE_10
       VALUE_100
     }
-    type Query {
-      people: [Person]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -536,6 +550,9 @@ test('handles enum with namespace overlapping JS Object internals', () => {
     },
   }
   const expectedSchemaText = `
+    type Query {
+      comparators: [Comparator]
+    }
     type Comparator {
       operator: ComparatorOperator
     }
@@ -543,9 +560,7 @@ test('handles enum with namespace overlapping JS Object internals', () => {
       constructor
       __proto__
     }
-    type Query {
-      comparators: [Comparator]
-    }`
+  `
   testConversion(jsonSchema, expectedSchemaText)
 })
 
@@ -601,6 +616,15 @@ test('converts `oneOf` schemas (with if/then) to union types', () => {
     ],
   }
   const expectedSchemaText = `
+    type Query {
+      parents: [Parent]
+      children: [Child]
+      people: [Person]
+    }
+    type Parent {
+      type: String
+      name: String
+    }
     type Child {
       type: String
       name: String
@@ -608,16 +632,8 @@ test('converts `oneOf` schemas (with if/then) to union types', () => {
       bestFriend: Person
       friends: [Person!]
     }
-    type Parent {
-      type: String
-      name: String
-    }
     union Person = Parent | Child
-    type Query {
-      parents: [Parent]
-      children: [Child]
-      people: [Person]
-    }`
+  `
   testConversion([parent, child, person], expectedSchemaText)
 })
 
@@ -649,6 +665,15 @@ test('converts `oneOf` schemas to union types', () => {
     oneOf: [{ $ref: '#/Parent' }, { $ref: '#/Child' }],
   }
   const expectedSchemaText = `
+    type Query {
+      parents: [Parent]
+      children: [Child]
+      people: [Person]
+    }
+    type Parent {
+      type: String
+      name: String
+    }
     type Child {
       type: String
       name: String
@@ -656,16 +681,8 @@ test('converts `oneOf` schemas to union types', () => {
       bestFriend: Person
       friends: [Person!]
     }
-    type Parent {
-      type: String
-      name: String
-    }
     union Person = Parent | Child
-    type Query {
-      parents: [Parent]
-      children: [Child]
-      people: [Person]
-    }`
+  `
   testConversion([parent, child, person], expectedSchemaText)
 })
 

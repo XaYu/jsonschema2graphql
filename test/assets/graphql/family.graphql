@@ -1,36 +1,36 @@
-"""
-Approval: If this field element and the `approved` value is `true`, the log entry was reviewed and approved by a parent.
-"""
-type Approval {
-  "Reference to the User making the approval"
-  user_id: String!
-
-  "Date and time that the approval was made"
-  timeStamp: String!
-
-  "If an existing approval entry has a value of `approved=false`, then the log item was rejected."
-  approved: Boolean!
+type Query {
+  objectIds: [String]
+  emails: [String]
+  valueRanges: [ValueRange]
+  timeRanges: [TimeRange]
+  items: [Item]
+  approvals: [Approval]
+  logs: [Log]
+  users: [User]
+  families: [Family]
 }
 
 """
-Family: Represents a single family account and all its data.
+Value Range
 """
-type Family {
-  _id: String!
-
-  "Name of the family. Typically one or two last names."
-  name: String!
-
-  "All users (parents and children) associated with the family."
-  users: [User!]!
-
-  "The tasks and rewards defined by this family."
-  items: [Item!]!
+type ValueRange {
+  min: Float
+  max: Float
 }
 
 """
-Item: Represents a task (something that earns coins, e.g. walking the dog) or a
-reward (something that spends coins, e.g. screen time).
+Time range: Start and end times for an activity.
+"""
+type TimeRange {
+  "Start time"
+  start: String
+
+  "End time"
+  end: String
+}
+
+"""
+Item: Represents a task (something that earns coins, e.g. walking the dog) or a reward (something that spends coins, e.g. screen time).
 """
 type Item {
   _id: String!
@@ -44,8 +44,7 @@ type Item {
   description: String!
 
   """
-  If true, the number of coins generated or consumed by this item depends of the 
-  number of minutes that it lasted. For example, screen time or reading time.
+  If true, the number of coins generated or consumed by this item depends of the number of minutes that it lasted. For example, screen time or reading time.
   """
   isTimed: Boolean
 
@@ -54,6 +53,20 @@ type Item {
 
   "Minimum and maximum coin values that can be earned or spent for this item."
   coinValueRange: ValueRange
+}
+
+"""
+Approval: If this field element and the `approved` value is `true`, the log entry was reviewed and approved by a parent.
+"""
+type Approval {
+  "Reference to the User making the approval"
+  user_id: String!
+
+  "Date and time that the approval was made"
+  timeStamp: String!
+
+  "If an existing approval entry has a value of `approved=false`, then the log item was rejected."
+  approved: Boolean!
 }
 
 """
@@ -81,37 +94,12 @@ type Log {
   minutes: Int
 
   """
-  Manual entry?: If true, the time(s) for this log were entered or edited
-  manually (as opposed to being the moment that the item was logged, or the
-  moments that Start and Stop were pressed.
+  Manual entry?: If true, the time(s) for this log were entered or edited manually (as opposed to being the moment that the item was logged, or the moments that Start and Stop were pressed.
   """
   isManualEntry: Boolean
 
   "Approval: A record of the activity having been reviewed by a parent and either approved or rejected."
   approval: Approval
-}
-
-type Query {
-  objectIds: [String]
-  emails: [String]
-  valueRanges: [ValueRange]
-  timeRanges: [TimeRange]
-  items: [Item]
-  approvals: [Approval]
-  logs: [Log]
-  users: [User]
-  families: [Family]
-}
-
-"""
-Time range: Start and end times for an activity.
-"""
-type TimeRange {
-  "Start time"
-  start: String
-
-  "End time"
-  end: String
 }
 
 """
@@ -138,9 +126,17 @@ type User {
 }
 
 """
-Value Range
+Family: Represents a single family account and all its data.
 """
-type ValueRange {
-  min: Float
-  max: Float
+type Family {
+  _id: String!
+
+  "Name of the family. Typically one or two last names."
+  name: String!
+
+  "All users (parents and children) associated with the family."
+  users: [User!]!
+
+  "The tasks and rewards defined by this family."
+  items: [Item!]!
 }
