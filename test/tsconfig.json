@@ -1,4 +1,5 @@
 {
   "compilerOptions": {},
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts", "./matchers/index.ts"],
+  "files": ["./@types/jest.d.ts"]
 }

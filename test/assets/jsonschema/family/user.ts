@@ -1,5 +1,5 @@
 export const user = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: '#/User',
   title: 'User',
   description: 'Represents a single user (parent or child) and, in the case of a child, their full history.',
@@ -36,10 +36,10 @@ export const user = {
 
     balance: {
       type: 'number',
-      description: '(Child only.) The user\'s current coin balance, calculated from the activity logs.',
+      description: "(Child only.) The user's current coin balance, calculated from the activity logs.",
       readonly: true,
     },
-    
+
     logs: {
       type: 'array',
       title: 'Users',

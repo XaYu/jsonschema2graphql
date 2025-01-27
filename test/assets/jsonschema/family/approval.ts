@@ -1,7 +1,7 @@
 import { pattern } from './pattern'
 
 export const approval = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: '#/Approval',
   title: 'Approval',
   type: 'object',

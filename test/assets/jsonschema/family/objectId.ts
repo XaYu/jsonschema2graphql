@@ -1,5 +1,6 @@
 import { pattern } from './pattern'
 export const objectId = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: '#/ObjectId',
   type: 'string',
   name: 'MongoDb Object ID',

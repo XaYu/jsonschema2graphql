@@ -118,7 +118,7 @@ it('fails on unknown types', () => {
     },
   })
   const conversion = () => convert({ jsonSchema })
-  expect(conversion).toThrowError()
+  expect(conversion).toThrow()
 })
 
 it('converts descriptions', () => {
@@ -377,10 +377,10 @@ test('handles a circular reference', () => {
   testConversion([orange, apple], expectedSchemaText)
 })
 
-test('handles references to local definitions', () => {
+test('handles references to local $defs', () => {
   const jsonSchema: JSONSchema7 = {
     $id: '#/Contact',
-    definitions: {
+    $defs: {
       Address: {
         type: 'object',
         properties: {
@@ -393,8 +393,8 @@ test('handles references to local definitions', () => {
     type: 'object',
     properties: {
       name: { type: 'string' },
-      billing_address: { $ref: '#/definitions/Address' },
-      shipping_address: { $ref: '#/definitions/Address' },
+      billing_address: { $ref: '#/$defs/Address' },
+      shipping_address: { $ref: '#/$defs/Address' },
     },
   }
   const expectedSchemaText = `
@@ -723,7 +723,7 @@ test('converts family schema', () => {
 test('builds custom query and mutation blocks', () => {
   const jsonSchema = FAMILY as JSONSchema7
 
-  const entryPoints: EntryPointBuilder = types => {
+  const entryPoints: EntryPointBuilder = (types) => {
     return {
       query: new GraphQLObjectType({
         name: 'Query',

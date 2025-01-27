@@ -1,5 +1,5 @@
 export const item = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: 'Item',
   title: 'Item',
   description:
@@ -8,7 +8,7 @@ export const item = {
   required: ['_id', 'name', 'icon', 'description', 'coinValue'],
   properties: {
     _id: {
-      $ref: '#/definitions/ObjectId',
+      $ref: '#/$defs/ObjectId',
     },
 
     name: {
@@ -46,7 +46,7 @@ export const item = {
     },
 
     coinValueRange: {
-      $ref: '#/definitions/ValueRange',
+      $ref: '#/$defs/ValueRange',
       // title: 'Range of coin values',
       description: 'Minimum and maximum coin values that can be earned or spent for this item.',
     },

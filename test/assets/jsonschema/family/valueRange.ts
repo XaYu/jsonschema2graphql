@@ -1,5 +1,5 @@
 export const valueRange = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: '#/ValueRange',
   type: 'object',
   title: 'Value Range',

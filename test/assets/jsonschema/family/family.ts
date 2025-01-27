@@ -1,5 +1,5 @@
 export const family = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: '#/Family',
   title: 'Family',
   description: 'Represents a single family account and all its data.',

@@ -1,4 +1,4 @@
-import Ajv from 'ajv'
+import Ajv2020 from 'ajv/dist/2020'
 import {
   GraphQLBoolean,
   GraphQLEnumType,
@@ -7,12 +7,13 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
+  GraphQLScalarType,
   GraphQLString,
   GraphQLType,
   GraphQLUnionType,
 } from 'graphql'
-import { JSONSchema7 } from 'json-schema'
-import _ from 'lodash'
+import { JSONSchema4TypeName, JSONSchema7 } from 'json-schema'
+import _, { isArray } from 'lodash'
 import uppercamelcase from 'uppercamelcase'
 import { GraphQLTypeMap } from './@types'
 import { getTypeName } from './getTypeName'
@@ -20,7 +21,7 @@ import { graphqlSafeEnumKey } from './graphqlSafeEnumKey'
 import { err } from './helpers'
 
 /** Maps basic JSON schema types to basic GraphQL types */
-const BASIC_TYPE_MAPPING = {
+const BASIC_TYPE_MAPPING: Partial<Record<JSONSchema4TypeName, GraphQLScalarType>> = {
   string: GraphQLString,
   integer: GraphQLInt,
   number: GraphQLFloat,
@@ -29,16 +30,15 @@ const BASIC_TYPE_MAPPING = {
 
 export function schemaReducer(knownTypes: GraphQLTypeMap, schema: JSONSchema7) {
   // validate against the json schema schema
-  new Ajv().validateSchema(schema)
+  new Ajv2020().validateSchema(schema)
 
   const $id = schema.$id
   if (_.isUndefined($id)) throw err('Schema does not have an `$id` property.')
   const typeName = getTypeName($id)
 
-  // definitions
-  const { definitions } = schema
-  for (const definedTypeName in definitions) {
-    const definedSchema = definitions[definedTypeName] as JSONSchema7
+  const $defs = schema.$defs
+  for (const definedTypeName in $defs) {
+    const definedSchema = $defs[definedTypeName] as JSONSchema7
     knownTypes[definedTypeName] = buildType(definedTypeName, definedSchema, knownTypes)
   }
 
@@ -51,10 +51,10 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
 
   // oneOf?
   if (!_.isUndefined(schema.oneOf)) {
-    const cases = schema.oneOf as JSONSchema7
+    const cases = schema.oneOf
     const caseKeys = Object.keys(cases)
-    const types: GraphQLObjectType[] = caseKeys.map((caseName: string) => {
-      const caseSchema = cases[caseName]
+    const types: GraphQLObjectType[] = caseKeys.map((caseName) => {
+      const caseSchema = cases[caseName as keyof typeof cases] as JSONSchema7
       const qualifiedName = `${name}_${caseName}`
       const typeSchema = (caseSchema.then || caseSchema) as JSONSchema7
       return buildType(qualifiedName, typeSchema, knownTypes) as GraphQLObjectType
@@ -107,8 +107,8 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
   }
 
   // basic?
-  else if (BASIC_TYPE_MAPPING[schema.type as string]) {
-    return BASIC_TYPE_MAPPING[schema.type as string]
+  else if (schema.type && !isArray(schema.type) && BASIC_TYPE_MAPPING[schema.type]) {
+    return BASIC_TYPE_MAPPING[schema.type] as typeof GraphQLString
   }
 
   // ¯\_(ツ)_/¯
