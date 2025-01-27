@@ -318,7 +318,7 @@ test('fails when given an invalid $ref', () => {
     },
   }
   const conversion = () => convert({ jsonSchema })
-  expect(conversion).toThrowError()
+  expect(conversion).toThrow()
 })
 
 test('handles self-reference', () => {
@@ -561,7 +561,7 @@ test('fails on enum for non-string properties', () => {
     },
   }
   const conversion = () => convert({ jsonSchema })
-  expect(conversion).toThrowError()
+  expect(conversion).toThrow()
 })
 
 test('converts `oneOf` schemas (with if/then) to union types', () => {
