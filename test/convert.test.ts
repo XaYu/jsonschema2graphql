@@ -49,7 +49,7 @@ it('correctly converts basic attribute types', () => {
     type Person {
       name: String
       age: Int
-      score: Float 
+      score: Float
       isMyFriend: Boolean
     }
   `
@@ -391,7 +391,7 @@ test('handles references to local $defs', () => {
   const jsonSchema: JSONSchema7 = {
     $id: '#/Contact',
     $defs: {
-      Address: {
+      address: {
         type: 'object',
         properties: {
           street_address: { type: 'string' },
@@ -403,8 +403,8 @@ test('handles references to local $defs', () => {
     type: 'object',
     properties: {
       name: { type: 'string' },
-      billing_address: { $ref: '#/$defs/Address' },
-      shipping_address: { $ref: '#/$defs/Address' },
+      billing_address: { $ref: '#/$defs/address' },
+      shipping_address: { $ref: '#/$defs/address' },
     },
   }
   const expectedSchemaText = `

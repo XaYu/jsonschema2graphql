@@ -34,15 +34,17 @@ export function schemaReducer(knownTypes: GraphQLTypeMap, schema: JSONSchema7) {
 
   const $id = schema.$id
   if (_.isUndefined($id)) throw err('Schema does not have an `$id` property.')
-  const typeName = getTypeName($id)
 
+  const typeName = getTypeName($id)
   const $defs = schema.$defs
+
   for (const definedTypeName in $defs) {
     const definedSchema = $defs[definedTypeName] as JSONSchema7
-    knownTypes[definedTypeName] = buildType(definedTypeName, definedSchema, knownTypes)
+    knownTypes[uppercamelcase(definedTypeName)] = buildType(definedTypeName, definedSchema, knownTypes)
   }
 
   knownTypes[typeName] = buildType(typeName, schema, knownTypes)
+
   return knownTypes
 }
 
@@ -57,9 +59,11 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
       const caseSchema = cases[caseName as keyof typeof cases] as JSONSchema7
       const qualifiedName = `${name}_${caseName}`
       const typeSchema = (caseSchema.then || caseSchema) as JSONSchema7
+
       return buildType(qualifiedName, typeSchema, knownTypes) as GraphQLObjectType
     })
     const description = buildDescription(schema)
+
     return new GraphQLUnionType({ name, description, types })
   }
 
@@ -72,6 +76,7 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
             const qualifiedFieldName = `${name}.${fieldName}`
             const type = buildType(qualifiedFieldName, prop, knownTypes) as GraphQLObjectType
             const isRequired = _.includes(schema.required, fieldName)
+
             return {
               type: isRequired ? new GraphQLNonNull(type) : type,
               description: buildDescription(prop),
@@ -79,12 +84,14 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
           })
         : // GraphQL doesn't allow types with no fields, so put a placeholder
           { _empty: { type: GraphQLString } }
+
     return new GraphQLObjectType({ name, description, fields })
   }
 
   // array?
   else if (schema.type === 'array') {
     const elementType = buildType(name, schema.items as JSONSchema7, knownTypes)
+
     return new GraphQLList(new GraphQLNonNull(elementType))
   }
 
@@ -95,6 +102,7 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
     const graphqlToJsonMap = _.keyBy(schema.enum, graphqlSafeEnumKey)
     const values = _.mapValues(graphqlToJsonMap, (value: string) => ({ value }))
     const enumType = new GraphQLEnumType({ name, description, values })
+
     return enumType
   }
 
@@ -102,7 +110,9 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
   else if (!_.isUndefined(schema.$ref)) {
     const ref = getTypeName(schema.$ref)
     const type = knownTypes[ref]
+
     if (!type) throw err(`The referenced type ${ref} is unknown.`, name)
+
     return type
   }
 
