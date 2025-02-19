@@ -36,8 +36,9 @@ export function schemaReducer(knownTypes: GraphQLTypeMap, schema: JSONSchema7) {
   if (_.isUndefined($id)) throw err('Schema does not have an `$id` property.')
 
   const typeName = getTypeName($id)
-  const $defs = schema.$defs
 
+  // $defs
+  const $defs = schema.$defs
   for (const definedTypeName in $defs) {
     const definedSchema = $defs[definedTypeName] as JSONSchema7
     knownTypes[uppercamelcase(definedTypeName)] = buildType(definedTypeName, definedSchema, knownTypes)
@@ -55,6 +56,7 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
   if (!_.isUndefined(schema.oneOf)) {
     const cases = schema.oneOf
     const caseKeys = Object.keys(cases)
+
     const types: GraphQLObjectType[] = caseKeys.map((caseName) => {
       const caseSchema = cases[caseName as keyof typeof cases] as JSONSchema7
       const qualifiedName = `${name}_${caseName}`
@@ -62,8 +64,8 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
 
       return buildType(qualifiedName, typeSchema, knownTypes) as GraphQLObjectType
     })
-    const description = buildDescription(schema)
 
+    const description = buildDescription(schema)
     return new GraphQLUnionType({ name, description, types })
   }
 
@@ -112,7 +114,6 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
     const type = knownTypes[ref]
 
     if (!type) throw err(`The referenced type ${ref} is unknown.`, name)
-
     return type
   }
 

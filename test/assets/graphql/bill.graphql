@@ -1,0 +1,25 @@
+type Query {
+  selectedProducts: [SelectedProducts]
+  claimAccounts: [ClaimAccount]
+  bills: [Bill]
+}
+
+type SelectedProducts {
+  selectedProduct: String!
+  selectedPremiumClasses: [String!]
+}
+
+type ClaimAccount {
+  claimAccountNbr: String!
+  claimAccountName: String
+}
+
+"""
+Bill: Bill
+"""
+type Bill {
+  accountName: String!
+  billingAdmin1: String
+  selectedProducts: [SelectedProducts!]
+  claimAccount: [ClaimAccount!]
+}

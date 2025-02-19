@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "title": "Bill",
+  "description": "Bill",
+  "properties": {
+    "accountName": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 255
+    },
+    "billingAdmin1": {
+      "type": "string"
+    },
+    "selectedProducts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/selectedProducts"
+      }
+    },
+    "claimAccount": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ClaimAccount"
+      }
+    }
+  },
+  "required": ["accountName"],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bill",
+  "$defs": {
+    "selectedProducts": {
+      "type": "object",
+      "properties": {
+        "selectedProduct": {
+          "type": "string",
+          "url": "cip-qa-key.apps.ocp2.dslocal.com/v1/keys/AccountProduct"
+        },
+        "selectedPremiumClasses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "url": "cip-qa-key.apps.ocp2.dslocal.com/v1/keys/AccountProductClass"
+          }
+        }
+      },
+      "required": ["selectedProduct"]
+    },
+    "ClaimAccount": {
+      "type": "object",
+      "properties": {
+        "claimAccountNbr": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 4
+        },
+        "claimAccountName": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 255
+        }
+      },
+      "required": ["claimAccountNbr"]
+    }
+  }
+}

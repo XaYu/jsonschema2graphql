@@ -1,0 +1,41 @@
+{
+  "$id": "Person",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Parent"
+    },
+    {
+      "$ref": "#/$defs/Child"
+    }
+  ],
+  "$defs": {
+    "Parent": {
+      "$id": "Parent",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Child": {
+      "$id": "Child",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "name": { "type": "string" },
+        "parent": { "$ref": "Person#/$defs/Parent" },
+        "bestFriend": { "$ref": "Person" },
+        "friends": {
+          "type": "array",
+          "items": { "$ref": "Person" }
+        }
+      }
+    }
+  }
+}

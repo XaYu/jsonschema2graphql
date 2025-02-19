@@ -716,6 +716,18 @@ test('handles `oneOf` schemas that include anonymous types', () => {
   testConversion(thing, expectedSchemaText)
 })
 
+test('converts Person schema', () => {
+  const jsonSchema: JSONSchema7 = readAsset('jsonschema/person.json')
+  const expectedSchemaText: string = readAsset('graphql/person.graphql')
+  testConversion(jsonSchema, expectedSchemaText)
+})
+
+test('converts bill schema', () => {
+  const jsonSchema: JSONSchema7 = readAsset('jsonschema/bill.json')
+  const expectedSchemaText: string = readAsset('graphql/bill.graphql')
+  testConversion(jsonSchema, expectedSchemaText)
+})
+
 //
 // Family tests
 

@@ -1,0 +1,17 @@
+type Query {
+  parents: [Parent]
+  children: [Child]
+  people: [Person]
+}
+type Parent {
+  type: String
+  name: String
+}
+type Child {
+  type: String
+  name: String
+  parent: Parent
+  bestFriend: Person
+  friends: [Person!]
+}
+union Person = Parent | Child
