@@ -25,12 +25,21 @@ import { ConvertParams, GraphQLTypeMap } from './@types'
  * To override this behavior, provide a `queryBlockBuilder` callback that takes
  * a Map of types and returns Query, Mutation (optional), and Subscription (optional)
  * blocks. Each block consists of a hash of `GraphQLFieldConfig`s.
+ *
+ * @param convertOneOfValuesToEnumArray - By default is set to true - handles properties of type string with array of oneOf values converting those values into an enum array
  */
-export default function convert({ jsonSchema, entryPoints = DEFAULT_ENTRY_POINTS }: ConvertParams): GraphQLSchema {
+export default function convert({
+  jsonSchema,
+  entryPoints = DEFAULT_ENTRY_POINTS,
+  convertOneOfValuesToEnumArray = true,
+}: ConvertParams): GraphQLSchema {
   // coerce input to array of schema objects
   const schemaArray: JSONSchema7[] = toArray(jsonSchema).map(toSchema)
 
-  const types: GraphQLTypeMap = schemaArray.reduce(schemaReducer, {})
+  const types: GraphQLTypeMap = schemaArray.reduce(
+    (acc, cur) => schemaReducer(acc as GraphQLTypeMap, cur, convertOneOfValuesToEnumArray),
+    {}
+  ) as GraphQLTypeMap
 
   return new GraphQLSchema({
     ...types,

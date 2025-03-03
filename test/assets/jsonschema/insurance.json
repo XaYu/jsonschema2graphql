@@ -1,0 +1,738 @@
+{
+  "$id": "insurance",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "INSURANCE",
+  "type": "object",
+  "title": "INSURANCE",
+  "required": ["insuranceStatus", "insuranceName"],
+  "properties": {
+    "isSameSexMarriageSelected": {
+      "type": "boolean"
+    },
+    "WellnessRider": {
+      "type": "object"
+    },
+    "insuranceNumber": {
+      "type": "string",
+      "maxLength": 9
+    },
+    "contractType": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "B",
+          "title": "BILLING SUPPLEMENT"
+        },
+        {
+          "const": "C",
+          "title": "CENSUS"
+        },
+        {
+          "const": "G",
+          "title": "GAC"
+        },
+        {
+          "const": "N",
+          "title": "Not Applicable"
+        }
+      ],
+      "name": "MASTER_POLICY_CONTRACT_TYPE_CD"
+    },
+    "ascEBillCntLevCode": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "100",
+          "title": "NON-APPLICABLE"
+        },
+        {
+          "const": "120",
+          "title": "1-9 SIZE GROUP"
+        },
+        {
+          "const": "140",
+          "title": "10-50 SIZE GROUP"
+        },
+        {
+          "const": "160",
+          "title": "51-99 SIZE GROUP"
+        },
+        {
+          "const": "180",
+          "title": "100-199 SIZE GROUP"
+        },
+        {
+          "const": "200",
+          "title": "200+ SIZE GROUP"
+        }
+      ],
+      "name": "ENROLLMENT_CLASS_CD"
+    },
+    "groupAverageAge": {
+      "type": "number"
+    },
+    "isHSASelected": {
+      "type": "boolean"
+    },
+    "insuranceName": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "performanceGuarantee": {
+      "type": "boolean"
+    },
+    "segmentInd": {
+      "type": "boolean"
+    },
+    "DivisibleSurplus": {
+      "type": "object",
+      "properties": {
+        "refundPercent": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "0",
+              "title": "0"
+            },
+            {
+              "const": "1",
+              "title": "50"
+            },
+            {
+              "const": "2",
+              "title": "100"
+            }
+          ],
+          "name": "DIVISIBLE_SURPLUS_FINAL_REFUND_PERCENTAGE_CD"
+        },
+        "qualifyForDivisibleSurplus": {
+          "type": "boolean"
+        }
+      }
+    },
+    "dependCancelReportFreq": {
+      "type": "string",
+      "name": "FREQUENCY_CD"
+    },
+    "numberActvContCovContract": {
+      "maximum": 4,
+      "type": "number"
+    },
+    "adjustedEligibleEmployees": {
+      "maximum": 7,
+      "type": "number"
+    },
+    "rateNotApplicable": {
+      "type": "boolean"
+    },
+    "numberActvContCovMembers": {
+      "maximum": 4,
+      "type": "number"
+    },
+    "grandFatheredCode": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "0",
+          "title": "NOT APPLICABLE"
+        },
+        {
+          "const": "9",
+          "title": "INDIVIDUAL NON GROUP"
+        },
+        {
+          "const": "B",
+          "title": "GRANDMOTHERED"
+        },
+        {
+          "const": "E",
+          "title": "ENHANCED"
+        },
+        {
+          "const": "M",
+          "title": "MIXED"
+        },
+        {
+          "const": "N",
+          "title": "NON-GRANDFATHERED"
+        },
+        {
+          "const": "Y",
+          "title": "GRANDFATHERED"
+        }
+      ],
+      "name": "HCR_GRANDFATHER_CD"
+    },
+    "numberActiveMembers": {
+      "maximum": 4,
+      "type": "number"
+    },
+    "specialIdHandlingCode": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "A",
+          "title": "A"
+        },
+        {
+          "const": "B",
+          "title": "B"
+        },
+        {
+          "const": "C",
+          "title": "C"
+        }
+      ],
+      "name": "GROUP_ID_CARD_HANDLING_CD"
+    },
+    "hospExtenBenefitDays": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "0",
+          "title": "0"
+        },
+        {
+          "const": "31",
+          "title": "31"
+        },
+        {
+          "const": "120",
+          "title": "120"
+        }
+      ],
+      "name": "GROUP_HOSP_EXTEN_BENEFIT_DAYS"
+    },
+    "ageRule": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "1",
+          "title": "ACTUAL AGE"
+        },
+        {
+          "const": "2",
+          "title": "AGE AS OF BEGINNING OF CALENDAR MONTH"
+        },
+        {
+          "const": "3",
+          "title": "AGE AS OF BEGINNING OF CALENDAR YEAR"
+        },
+        {
+          "const": "4",
+          "title": "AGE AS OF BEGINNING OF ANNIVERSARY YEAR"
+        },
+        {
+          "const": "5",
+          "title": "AGE AS OF EFFECTIVE DATE"
+        },
+        {
+          "const": "6",
+          "title": "AGE AS OF END OF ANNIVERSARY YEAR"
+        },
+        {
+          "const": "7",
+          "title": "AGE AS OF END OF CALENDAR MONTH"
+        }
+      ],
+      "name": "AGE_RULE_CD_BENEFIT_PLAN"
+    },
+    "joinderAggreement": {
+      "type": "boolean"
+    },
+    "nationalServiceDate": {
+      "format": "date",
+      "type": "string"
+    },
+    "origEffectiveDate": {
+      "format": "date",
+      "type": "string"
+    },
+    "performAutoRateChange": {
+      "type": "boolean"
+    },
+    "numEligEmployees": {
+      "maximum": 7,
+      "type": "number"
+    },
+    "StopClaim": {
+      "type": "object",
+      "properties": {
+        "stopClaimCode": {
+          "type": "string",
+          "name": "ADMIN_DETAILS_STOP_CLM_CD"
+        },
+        "stopClaimAction": {
+          "type": "string",
+          "name": "ADMIN_DETAILS_STOP_CLM_ACTION_TP"
+        },
+        "stopClaimActionCode": {
+          "type": "string",
+          "name": "ADMIN_DETAILS_STOP_CLM_ACTION_CD"
+        },
+        "stopClaimLocation": {
+          "type": "string",
+          "name": "ADMIN_DETAILS_STOP_CLM_LOC"
+        },
+        "stopClaimDate": {
+          "format": "date",
+          "type": "string"
+        }
+      }
+    },
+    "insuranceStatus": {
+      "type": "string",
+      "name": "MSTR_PLCY_STAT_CD"
+    },
+    "timelyFiling": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "1",
+          "title": "15 MONTHS"
+        },
+        {
+          "const": "2",
+          "title": "24 MONTHS"
+        },
+        {
+          "const": "3",
+          "title": "36 MONTHS"
+        },
+        {
+          "const": "4",
+          "title": "36 Days"
+        },
+        {
+          "const": "5",
+          "title": "45 Weeks"
+        },
+        {
+          "const": "6",
+          "title": "20 Days"
+        }
+      ],
+      "name": "TIMELY_FILING_CD"
+    },
+    "isStopNewsLetterSelected": {
+      "type": "boolean"
+    },
+    "isFSASelected": {
+      "type": "boolean"
+    },
+    "newGroupDentalCode": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "A",
+          "title": "ASSOCIATION LEVEL"
+        },
+        {
+          "const": "N",
+          "title": "NOT ALLOWED AT ANY LEVEL"
+        },
+        {
+          "const": "O",
+          "title": "ASSOCIATION EMPLOYER - OPTIONAL"
+        },
+        {
+          "const": "R",
+          "title": "ASSOCIATION EMPLOYER - REQUIRED"
+        }
+      ],
+      "name": "ELECTRONIC_INFORMATION_CONTROL_LEVEL"
+    },
+    "CertificateContractGroup": {
+      "type": "object",
+      "properties": {
+        "certGroupNameInstructions": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "A",
+              "title": "PRINT INSURANCE NAME"
+            },
+            {
+              "const": "B",
+              "title": "LEAVE BLANK"
+            },
+            {
+              "const": "C",
+              "title": "SPECIAL NAME"
+            }
+          ],
+          "name": "IDENTIFICATION_CARD_GROUP_NAME_CD"
+        },
+        "certSpecialName": {
+          "type": "string",
+          "maxLength": 255
+        }
+      }
+    },
+    "ohca": {
+      "type": "boolean"
+    },
+    "typeGroup": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "13",
+          "title": "NETWORK PRICING"
+        },
+        {
+          "const": "15",
+          "title": "ITS HOST"
+        },
+        {
+          "const": "2",
+          "title": "KANSAS CONTROL NATIONAL"
+        },
+        {
+          "const": "9",
+          "title": "FEP"
+        },
+        {
+          "const": "A",
+          "title": "A"
+        },
+        {
+          "const": "Q",
+          "title": "Q"
+        }
+      ],
+      "name": "TYP_GRP_CD"
+    },
+    "isERISASelected": {
+      "type": "boolean"
+    },
+    "groupAssignId": {
+      "type": "boolean"
+    },
+    "isSurvivingCoverageSelected": {
+      "type": "boolean"
+    },
+    "lastContractDate": {
+      "format": "date",
+      "type": "string"
+    },
+    "numEnrolledElsewhere": {
+      "maximum": 7,
+      "type": "number"
+    },
+    "contCoverageRateQuote": {
+      "type": "boolean"
+    },
+    "isSpecialNewbornRulesApplySelected": {
+      "type": "boolean"
+    },
+    "taxIdNum": {
+      "type": "string"
+    },
+    "numberActiveContract": {
+      "maximum": 4,
+      "type": "number"
+    },
+    "enrollBasedOnRenewal": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "100",
+          "title": "NON-APPLICABLE"
+        },
+        {
+          "const": "120",
+          "title": "1-9 SIZE GROUP"
+        },
+        {
+          "const": "140",
+          "title": "10-50 SIZE GROUP"
+        },
+        {
+          "const": "160",
+          "title": "51-99 SIZE GROUP"
+        },
+        {
+          "const": "180",
+          "title": "100-199 SIZE GROUP"
+        },
+        {
+          "const": "200",
+          "title": "200+ SIZE GROUP"
+        }
+      ],
+      "name": "ENROLLMENT_CLASS_CD"
+    },
+    "isSurvivingCoverage": {
+      "type": "boolean"
+    },
+    "isHRASelected": {
+      "type": "boolean"
+    },
+    "userId": {
+      "type": "string"
+    },
+    "accessID": {
+      "type": "string"
+    },
+    "riskPool": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "wellnessRiderAmount",
+          "title": "Dollar Amount"
+        },
+        {
+          "const": "wellnessRiderMonth",
+          "title": "Month"
+        },
+        {
+          "const": "wellnessRiderPercent",
+          "title": "Percentage"
+        },
+        {
+          "const": "specialName",
+          "title": "Special Name"
+        },
+        {
+          "const": "certSpecialName",
+          "title": "Special Name"
+        },
+        {
+          "const": "stopCreIdcardDate",
+          "title": "Date"
+        },
+        {
+          "const": "supressDocType",
+          "title": "Suppress Document Type"
+        },
+        {
+          "const": "stopCreIdSupplDate",
+          "title": "Date"
+        },
+        {
+          "const": "stopCreIdCoverageDate",
+          "title": "Date"
+        },
+        {
+          "const": "contributionAmount",
+          "title": "Employee Amount"
+        },
+        {
+          "const": "contributionDepAmount",
+          "title": "Employee + Dependent Amount"
+        },
+        {
+          "const": "contributionPercent",
+          "title": "Employee Percent"
+        },
+        {
+          "const": "contributionDepPercent",
+          "title": "Employee + Dependent Percent"
+        },
+        {
+          "const": "contributionOther",
+          "title": "Other"
+        },
+        {
+          "const": "stopClaimDate",
+          "title": "Stop Claim Date Of Service"
+        },
+        {
+          "const": "qualifyForDivisibleSurplus",
+          "title": "Qualify for Divisible Surplus"
+        },
+        {
+          "const": "tradinPartId",
+          "title": "Trading Partner ID"
+        },
+        {
+          "const": "stopElectronicProcess",
+          "title": "Stop Electronic Processing"
+        },
+        {
+          "const": "eeRenewalFile",
+          "title": "EE Renewal Fle"
+        },
+        {
+          "const": "smallEmpException",
+          "title": "Small Employer Exception"
+        },
+        {
+          "const": "smartShopper",
+          "title": "SmartShopper"
+        },
+        {
+          "const": "memberOFP",
+          "title": "Member Out of Pocket"
+        },
+        {
+          "const": "isERISASelected",
+          "title": "ERISA"
+        },
+        {
+          "const": "isHRASelected",
+          "title": "HRA"
+        },
+        {
+          "const": "isHSASelected",
+          "title": "HSA"
+        },
+        {
+          "const": "isFSASelected",
+          "title": "FSA"
+        },
+        {
+          "const": "bargainingUnitEndDate",
+          "title": "Bargaining Unit End Date"
+        },
+        {
+          "const": "isSameSexMarriageSelected",
+          "title": "Same-Sex Marriage Not Covered"
+        },
+        {
+          "const": "isSpecialNewbornRulesApplySelected",
+          "title": "Special Newborn Rules Apply"
+        },
+        {
+          "const": "accessID",
+          "title": "Access ID"
+        },
+        {
+          "const": "taxIdNum",
+          "title": "Tax ID"
+        },
+        {
+          "const": "isSurvivingCoverage",
+          "title": "Surviving Coverage"
+        },
+        {
+          "const": "isStopNewsLetterSelected",
+          "title": "Stop Newsletter Mailings"
+        },
+        {
+          "const": "firstName",
+          "title": "First Name"
+        },
+        {
+          "const": "lastName",
+          "title": "Last Name"
+        },
+        {
+          "const": "employeeNumber",
+          "title": "Employee Number"
+        },
+        {
+          "const": "costCenter",
+          "title": "Cost Center"
+        },
+        {
+          "const": "repNumber",
+          "title": "Rep Number"
+        },
+        {
+          "const": "insuranceNumber",
+          "title": "INSURANCE Number"
+        },
+        {
+          "const": "insuranceName",
+          "title": "INSURANCE Name"
+        },
+        {
+          "const": "insuranceType",
+          "title": "INSURANCE Type"
+        },
+        {
+          "const": "effectiveDate",
+          "title": "Effective Date"
+        },
+        {
+          "const": "physicalAddressLine1",
+          "title": "Physical Address Line 1"
+        },
+        {
+          "const": "line2",
+          "title": "Line 2"
+        },
+        {
+          "const": "city",
+          "title": "City"
+        },
+        {
+          "const": "state",
+          "title": "State"
+        },
+        {
+          "const": "zip",
+          "title": "Zip"
+        },
+        {
+          "const": "county",
+          "title": "County"
+        },
+        {
+          "const": "phoneNumber",
+          "title": "Phone Number"
+        },
+        {
+          "const": "associationType",
+          "title": "Association Type"
+        },
+        {
+          "const": "associationMP",
+          "title": "Association MP"
+        }
+      ],
+      "name": "PROPERTY_TYPE"
+    },
+    "bargainingUnitEndDate": {
+      "format": "date",
+      "type": "string"
+    },
+    "utilizationTierPercent": {
+      "maximum": 4,
+      "type": "number"
+    },
+    "IdentificationCardGroupName": {
+      "type": "object"
+    },
+    "ascEInfoCntLevCode": {
+      "type": "string",
+      "name": "ELEC_INFO_CONTROL_LVL"
+    },
+    "MiscellaneousInformation": {
+      "type": "object",
+      "properties": {
+        "smallEmpException": {
+          "type": "boolean"
+        },
+        "smartShopper": {
+          "type": "boolean"
+        },
+        "memberOFP": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Contribution": {
+      "type": "object",
+      "properties": {
+        "contributionAmount": {
+          "type": "number"
+        },
+        "contributionPercent": {
+          "type": "number"
+        },
+        "contributionDepAmount": {
+          "type": "number"
+        },
+        "contributionDepPercent": {
+          "type": "number"
+        },
+        "contributionOther": {
+          "type": "string",
+          "maxLength": 255
+        }
+      }
+    }
+  }
+}

@@ -19,6 +19,7 @@ import { GraphQLTypeMap } from './@types'
 import { getTypeName } from './getTypeName'
 import { graphqlSafeEnumKey } from './graphqlSafeEnumKey'
 import { err } from './helpers'
+import { getOneOfEnumsSchema, isOneOfEnumsProperty } from './oneOfEnums'
 
 /** Maps basic JSON schema types to basic GraphQL types */
 const BASIC_TYPE_MAPPING: Partial<Record<JSONSchema4TypeName, GraphQLScalarType>> = {
@@ -28,7 +29,7 @@ const BASIC_TYPE_MAPPING: Partial<Record<JSONSchema4TypeName, GraphQLScalarType>
   boolean: GraphQLBoolean,
 }
 
-export function schemaReducer(knownTypes: GraphQLTypeMap, schema: JSONSchema7) {
+export function schemaReducer(knownTypes: GraphQLTypeMap, schema: JSONSchema7, convertOneOfValuesToEnumArray: boolean) {
   // validate against the json schema schema
   new Ajv2020().validateSchema(schema)
 
@@ -41,32 +42,51 @@ export function schemaReducer(knownTypes: GraphQLTypeMap, schema: JSONSchema7) {
   const $defs = schema.$defs
   for (const definedTypeName in $defs) {
     const definedSchema = $defs[definedTypeName] as JSONSchema7
-    knownTypes[uppercamelcase(definedTypeName)] = buildType(definedTypeName, definedSchema, knownTypes)
+
+    knownTypes[uppercamelcase(definedTypeName)] = buildType(
+      definedTypeName,
+      definedSchema,
+      knownTypes,
+      convertOneOfValuesToEnumArray
+    )
   }
 
-  knownTypes[typeName] = buildType(typeName, schema, knownTypes)
+  knownTypes[typeName] = buildType(typeName, schema, knownTypes, convertOneOfValuesToEnumArray)
 
   return knownTypes
 }
 
-function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTypeMap): GraphQLType {
+function buildType(
+  propName: string,
+  schema: JSONSchema7,
+  knownTypes: GraphQLTypeMap,
+  convertOneOfValuesToEnumArray: boolean
+): GraphQLType {
   const name = uppercamelcase(propName)
 
   // oneOf?
   if (!_.isUndefined(schema.oneOf)) {
-    const cases = schema.oneOf
-    const caseKeys = Object.keys(cases)
+    // oneOf enums
+    if (isOneOfEnumsProperty(schema)) {
+      const newSchema = getOneOfEnumsSchema(schema, convertOneOfValuesToEnumArray)
 
-    const types: GraphQLObjectType[] = caseKeys.map((caseName) => {
-      const caseSchema = cases[caseName as keyof typeof cases] as JSONSchema7
-      const qualifiedName = `${name}_${caseName}`
-      const typeSchema = (caseSchema.then || caseSchema) as JSONSchema7
+      return buildType(propName, newSchema, knownTypes, convertOneOfValuesToEnumArray) as GraphQLObjectType
+    } else {
+      // standard oneOf
+      const cases = schema.oneOf
+      const caseKeys = Object.keys(cases)
 
-      return buildType(qualifiedName, typeSchema, knownTypes) as GraphQLObjectType
-    })
+      const types: GraphQLObjectType[] = caseKeys.map((caseName) => {
+        const caseSchema = cases[caseName as keyof typeof cases] as JSONSchema7
+        const qualifiedName = `${name}_${caseName}`
+        const typeSchema = (caseSchema.then || caseSchema) as JSONSchema7
 
-    const description = buildDescription(schema)
-    return new GraphQLUnionType({ name, description, types })
+        return buildType(qualifiedName, typeSchema, knownTypes, convertOneOfValuesToEnumArray) as GraphQLObjectType
+      })
+
+      const description = buildDescription(schema)
+      return new GraphQLUnionType({ name, description, types })
+    }
   }
 
   // object?
@@ -76,7 +96,14 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
       !_.isEmpty(schema.properties)
         ? _.mapValues(schema.properties, (prop: JSONSchema7, fieldName: string) => {
             const qualifiedFieldName = `${name}.${fieldName}`
-            const type = buildType(qualifiedFieldName, prop, knownTypes) as GraphQLObjectType
+
+            const type = buildType(
+              qualifiedFieldName,
+              prop,
+              knownTypes,
+              convertOneOfValuesToEnumArray
+            ) as GraphQLObjectType
+
             const isRequired = _.includes(schema.required, fieldName)
 
             return {
@@ -92,7 +119,7 @@ function buildType(propName: string, schema: JSONSchema7, knownTypes: GraphQLTyp
 
   // array?
   else if (schema.type === 'array') {
-    const elementType = buildType(name, schema.items as JSONSchema7, knownTypes)
+    const elementType = buildType(name, schema.items as JSONSchema7, knownTypes, convertOneOfValuesToEnumArray)
 
     return new GraphQLList(new GraphQLNonNull(elementType))
   }

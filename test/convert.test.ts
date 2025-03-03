@@ -16,8 +16,8 @@ import { readAsset } from './utils/assets'
 
 // Helpers
 
-const testConversion = (jsonSchema: any, schemaText: string) => {
-  const schema = convert({ jsonSchema })
+const testConversion = (jsonSchema: any, schemaText: string, convertOneOfValuesToEnumArray: boolean = true) => {
+  const schema = convert({ jsonSchema, entryPoints: undefined, convertOneOfValuesToEnumArray })
   const actualSchemaText = printSchema(schema)
   expect(actualSchemaText).toEqualIgnoringWhitespace(schemaText)
 }
@@ -433,7 +433,7 @@ test('handles enum types', () => {
     properties: {
       height: {
         type: 'string',
-        enum: ['tall', 'average', 'short'], // <-- enum
+        enum: ['tall', 'average', 'short'],
       },
     },
   }
@@ -449,6 +449,74 @@ test('handles enum types', () => {
       tall
       average
       short
+    }
+  `
+  testConversion(jsonSchema, expectedSchemaText)
+})
+
+test('handles oneOf const/title values to string type', () => {
+  const jsonSchema: JSONSchema7 = {
+    $id: '#/State',
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        oneOf: [
+          {
+            const: 'CA',
+            title: 'CALIFORNIA',
+          },
+          {
+            const: 'AL',
+            title: 'ALABAMA',
+          },
+        ],
+      },
+    },
+  }
+
+  const expectedSchemaText = `
+    type Query {
+      states: [State]
+    }
+    type State {
+      name: String
+    }
+  `
+  testConversion(jsonSchema, expectedSchemaText, false)
+})
+
+test('handles oneOf const/title values to enum type', () => {
+  const jsonSchema: JSONSchema7 = {
+    $id: '#/Fruit',
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        oneOf: [
+          {
+            const: 'BAN',
+            title: 'BANANA',
+          },
+          {
+            const: 'ORG',
+            title: 'ORANGE',
+          },
+        ],
+      },
+    },
+  }
+
+  const expectedSchemaText = `
+    type Query {
+      fruits: [Fruit]
+    }
+    type Fruit {
+      name: FruitName
+    }
+    enum FruitName {
+      BAN
+      ORG
     }
   `
   testConversion(jsonSchema, expectedSchemaText)
@@ -725,6 +793,12 @@ test('converts Person schema', () => {
 test('converts bill schema', () => {
   const jsonSchema: JSONSchema7 = readAsset('jsonschema/bill.json')
   const expectedSchemaText: string = readAsset('graphql/bill.graphql')
+  testConversion(jsonSchema, expectedSchemaText)
+})
+
+test('converts insurance schema', () => {
+  const jsonSchema: JSONSchema7 = readAsset('jsonschema/insurance.json')
+  const expectedSchemaText: string = readAsset('graphql/insurance.graphql')
   testConversion(jsonSchema, expectedSchemaText)
 })
 

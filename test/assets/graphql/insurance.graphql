@@ -1,0 +1,253 @@
+type Query {
+  insurances: [Insurance]
+}
+
+"""
+INSURANCE: INSURANCE
+"""
+type Insurance {
+  isSameSexMarriageSelected: Boolean
+  WellnessRider: InsuranceWellnessRider
+  insuranceNumber: String
+  contractType: InsuranceContractType
+  ascEBillCntLevCode: InsuranceAscEBillCntLevCode
+  groupAverageAge: Float
+  isHSASelected: Boolean
+  insuranceName: String!
+  performanceGuarantee: Boolean
+  segmentInd: Boolean
+  DivisibleSurplus: InsuranceDivisibleSurplus
+  dependCancelReportFreq: String
+  numberActvContCovContract: Float
+  adjustedEligibleEmployees: Float
+  rateNotApplicable: Boolean
+  numberActvContCovMembers: Float
+  grandFatheredCode: InsuranceGrandFatheredCode
+  numberActiveMembers: Float
+  specialIdHandlingCode: InsuranceSpecialIdHandlingCode
+  hospExtenBenefitDays: InsuranceHospExtenBenefitDays
+  ageRule: InsuranceAgeRule
+  joinderAggreement: Boolean
+  nationalServiceDate: String
+  origEffectiveDate: String
+  performAutoRateChange: Boolean
+  numEligEmployees: Float
+  StopClaim: InsuranceStopClaim
+  insuranceStatus: String!
+  timelyFiling: InsuranceTimelyFiling
+  isStopNewsLetterSelected: Boolean
+  isFSASelected: Boolean
+  newGroupDentalCode: InsuranceNewGroupDentalCode
+  CertificateContractGroup: InsuranceCertificateContractGroup
+  ohca: Boolean
+  typeGroup: InsuranceTypeGroup
+  isERISASelected: Boolean
+  groupAssignId: Boolean
+  isSurvivingCoverageSelected: Boolean
+  lastContractDate: String
+  numEnrolledElsewhere: Float
+  contCoverageRateQuote: Boolean
+  isSpecialNewbornRulesApplySelected: Boolean
+  taxIdNum: String
+  numberActiveContract: Float
+  enrollBasedOnRenewal: InsuranceEnrollBasedOnRenewal
+  isSurvivingCoverage: Boolean
+  isHRASelected: Boolean
+  userId: String
+  accessID: String
+  riskPool: InsuranceRiskPool
+  bargainingUnitEndDate: String
+  utilizationTierPercent: Float
+  IdentificationCardGroupName: InsuranceIdentificationCardGroupName
+  ascEInfoCntLevCode: String
+  MiscellaneousInformation: InsuranceMiscellaneousInformation
+  Contribution: InsuranceContribution
+}
+
+type InsuranceWellnessRider {
+  _empty: String
+}
+
+enum InsuranceContractType {
+  B
+  C
+  G
+  N
+}
+
+enum InsuranceAscEBillCntLevCode {
+  VALUE_100
+  VALUE_120
+  VALUE_140
+  VALUE_160
+  VALUE_180
+  VALUE_200
+}
+
+type InsuranceDivisibleSurplus {
+  refundPercent: InsuranceDivisibleSurplusRefundPercent
+  qualifyForDivisibleSurplus: Boolean
+}
+
+enum InsuranceDivisibleSurplusRefundPercent {
+  VALUE_0
+  VALUE_1
+  VALUE_2
+}
+
+enum InsuranceGrandFatheredCode {
+  VALUE_0
+  VALUE_9
+  B
+  E
+  M
+  N
+  Y
+}
+
+enum InsuranceSpecialIdHandlingCode {
+  A
+  B
+  C
+}
+
+enum InsuranceHospExtenBenefitDays {
+  VALUE_0
+  VALUE_31
+  VALUE_120
+}
+
+enum InsuranceAgeRule {
+  VALUE_1
+  VALUE_2
+  VALUE_3
+  VALUE_4
+  VALUE_5
+  VALUE_6
+  VALUE_7
+}
+
+type InsuranceStopClaim {
+  stopClaimCode: String
+  stopClaimAction: String
+  stopClaimActionCode: String
+  stopClaimLocation: String
+  stopClaimDate: String
+}
+
+enum InsuranceTimelyFiling {
+  VALUE_1
+  VALUE_2
+  VALUE_3
+  VALUE_4
+  VALUE_5
+  VALUE_6
+}
+
+enum InsuranceNewGroupDentalCode {
+  A
+  N
+  O
+  R
+}
+
+type InsuranceCertificateContractGroup {
+  certGroupNameInstructions: InsuranceCertificateContractGroupCertGroupNameInstructions
+  certSpecialName: String
+}
+
+enum InsuranceCertificateContractGroupCertGroupNameInstructions {
+  A
+  B
+  C
+}
+
+enum InsuranceTypeGroup {
+  VALUE_13
+  VALUE_15
+  VALUE_2
+  VALUE_9
+  A
+  Q
+}
+
+enum InsuranceEnrollBasedOnRenewal {
+  VALUE_100
+  VALUE_120
+  VALUE_140
+  VALUE_160
+  VALUE_180
+  VALUE_200
+}
+
+enum InsuranceRiskPool {
+  wellnessRiderAmount
+  wellnessRiderMonth
+  wellnessRiderPercent
+  specialName
+  certSpecialName
+  stopCreIdcardDate
+  supressDocType
+  stopCreIdSupplDate
+  stopCreIdCoverageDate
+  contributionAmount
+  contributionDepAmount
+  contributionPercent
+  contributionDepPercent
+  contributionOther
+  stopClaimDate
+  qualifyForDivisibleSurplus
+  tradinPartId
+  stopElectronicProcess
+  eeRenewalFile
+  smallEmpException
+  smartShopper
+  memberOFP
+  isERISASelected
+  isHRASelected
+  isHSASelected
+  isFSASelected
+  bargainingUnitEndDate
+  isSameSexMarriageSelected
+  isSpecialNewbornRulesApplySelected
+  accessID
+  taxIdNum
+  isSurvivingCoverage
+  isStopNewsLetterSelected
+  firstName
+  lastName
+  employeeNumber
+  costCenter
+  repNumber
+  insuranceNumber
+  insuranceName
+  insuranceType
+  effectiveDate
+  physicalAddressLine1
+  line2
+  city
+  state
+  zip
+  county
+  phoneNumber
+  associationType
+  associationMP
+}
+
+type InsuranceIdentificationCardGroupName {
+  _empty: String
+}
+
+type InsuranceMiscellaneousInformation {
+  smallEmpException: Boolean
+  smartShopper: Boolean
+  memberOFP: Boolean
+}
+
+type InsuranceContribution {
+  contributionAmount: Float
+  contributionPercent: Float
+  contributionDepAmount: Float
+  contributionDepPercent: Float
+  contributionOther: String
+}
